@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import {
   TextField,
@@ -35,6 +35,20 @@ const useStyles = makeStyles({
 export const ToDoListForm = ({ toDoList, saveToDoList }) => {
   const classes = useStyles();
   const [todos, setTodos] = useState(toDoList.todos);
+  const isMounted = useRef(false);
+
+  useEffect(() => {
+    if (isMounted.current) {
+      const timerId = setTimeout(() => {
+        saveToDoList(toDoList.id, { todos });
+      }, 2000);
+      return () => {
+        clearTimeout(timerId);
+      };
+    } else {
+      isMounted.current = true;
+    }
+  }, [saveToDoList, toDoList.id, todos]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
