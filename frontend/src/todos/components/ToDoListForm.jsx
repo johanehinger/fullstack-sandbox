@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import {
   TextField,
@@ -88,23 +88,43 @@ export const ToDoListForm = ({ toDoList, saveToDoList }) => {
       <CardContent>
         <Typography component="h2">{toDoList.title}</Typography>
         <form onSubmit={handleSubmit} className={classes.form}>
-          {todos.map((name, index) => (
+          {todos.map((data, index) => (
             <div key={index} className={classes.todoLine}>
               <Typography className={classes.standardSpace} variant="h6">
                 {index + 1}
               </Typography>
               <TextField
+                style={
+                  data.done
+                    ? {
+                        textDecorationLine: "line-through",
+                        textDecorationStyle: "solid",
+                      }
+                    : null
+                }
                 label="What to do?"
-                value={name}
+                value={data.name}
                 onChange={(event) => {
                   setTodos([
                     // immutable update
                     ...todos.slice(0, index),
-                    event.target.value,
+                    { name: event.target.value, done: data.done },
                     ...todos.slice(index + 1),
                   ]);
                 }}
                 className={classes.textField}
+              />
+              <input
+                type="checkbox"
+                checked={data.done}
+                onChange={(event) => {
+                  setTodos([
+                    // immutable update
+                    ...todos.slice(0, index),
+                    { name: data.name, done: event.target.checked },
+                    ...todos.slice(index + 1),
+                  ]);
+                }}
               />
               <Button
                 size="small"
@@ -123,7 +143,7 @@ export const ToDoListForm = ({ toDoList, saveToDoList }) => {
               type="button"
               color="primary"
               onClick={() => {
-                setTodos([...todos, ""]);
+                setTodos([...todos, { name: "", done: false }]);
               }}
             >
               Add Todo <AddIcon />
