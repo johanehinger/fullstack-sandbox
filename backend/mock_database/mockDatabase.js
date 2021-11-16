@@ -57,3 +57,18 @@ module.exports.deleteTodo = (id, index) => {
   //   })
   // );
 };
+
+module.exports.addTodoList = (id, title, todos) => {
+  return sleep(1000)
+    .then(() => {
+      data[id] = { id: id, title: title, todos: todos };
+      Promise.resolve();
+    })
+    .then(() => Promise.resolve(data));
+  //  Mock database rejection.
+  // return sleep(1000).then(() =>
+  //   Promise.reject({
+  //     errorMessage: "Something went wrong!",
+  //   })
+  // );
+};

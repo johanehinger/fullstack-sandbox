@@ -40,3 +40,20 @@ module.exports.deleteTodo = (req, res) => {
       res.status(400).json({ message: "Failed to delete todo.", error: error });
     });
 };
+
+module.exports.addTodoList = (req, res) => {
+  id = req.body.id;
+  title = req.body.title;
+  todos = req.body.todos;
+  db.addTodoList(id, title, todos)
+    .then((data) => {
+      res
+        .status(200)
+        .json({ message: "Todo list successfully added.", data: data });
+    })
+    .catch((error) => {
+      res
+        .status(400)
+        .json({ message: "Failed to add todo list.", error: error });
+    });
+};
