@@ -35,6 +35,16 @@ export const ToDoLists = ({ style }) => {
       });
   };
 
+  const isCompleted = (id) => {
+    const list = toDoLists[id].todos;
+    for (let i = 0; i < list.length; i++) {
+      if (!list[i].done) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   const saveToDoList = (id, { todos }) => {
     const requestOptions = {
       method: "POST",
@@ -70,7 +80,24 @@ export const ToDoLists = ({ style }) => {
                 <ListItemIcon>
                   <ReceiptIcon />
                 </ListItemIcon>
-                <ListItemText primary={toDoLists[key].title} />
+                {/* <ListItemText primary={toDoLists[key].title} /> */}
+                <ListItemText
+                  disableTypography
+                  primary={
+                    <Typography
+                      style={
+                        isCompleted(key)
+                          ? {
+                              textDecorationLine: "line-through",
+                              textDecorationStyle: "solid",
+                            }
+                          : null
+                      }
+                    >
+                      {toDoLists[key].title}
+                    </Typography>
+                  }
+                />
               </ListItem>
             ))}
           </List>
